@@ -19,15 +19,36 @@ const pAequorFactory = (num, dnaArray) => {
     dna: dnaArray,
     mutate() {
       const newBase = returnRandBase();
-      const dnaIndex = dnaArray.indexOf(
-        Math.floor(Math.random() * dnaArray.length)
-      );
-      if (dnaIndex !== -1) {
-        dnaArray[dnaIndex] = newBase;
+      const randomDnaIndex = Math.floor(Math.random() * this.dna.length);
+
+      while (!this.dna === this.dna.splice(randomDnaIndex, 1, newBase)) {
+        this.dna.splice(randomDnaIndex, 1, newBase);
       }
-      return dnaArray;
+
+      return this.dna;
+    },
+    compareDNA(otherPAequor) {
+      let count = 0;
+
+      for (let i = 0; i < this.dna.length; i++) {
+        const thisBase = this.dna[i];
+        const otherBase = otherPAequor.dna[i];
+        if (thisBase === otherBase) {
+          count++;
+        }
+      }
+
+      return console.log(
+        `The total identical base count is ${count}. Specimen #1 and specimen #2 have ${(
+          (count / this.dna.length) *
+          100
+        ).toFixed(2)}% DNA in common.`
+      );
     },
   };
 };
 
-console.log(pAequorFactory(1, mockUpStrand()));
+// Test
+const subjectOne = pAequorFactory(1, mockUpStrand());
+const subjectTwo = pAequorFactory(2, mockUpStrand());
+console.log(subjectOne.compareDNA(subjectTwo));
