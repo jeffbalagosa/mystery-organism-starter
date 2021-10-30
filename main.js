@@ -38,17 +38,42 @@ const pAequorFactory = (num, dnaArray) => {
         }
       }
 
-      return console.log(
-        `The total identical base count is ${count}. Specimen #1 and specimen #2 have ${(
-          (count / this.dna.length) *
-          100
-        ).toFixed(2)}% DNA in common.`
-      );
+      return `The total identical base count is ${count}. Specimen #1 and specimen #2 have ${(
+        (count / this.dna.length) *
+        100
+      ).toFixed(2)}% DNA in common.`;
+    },
+    willLikelySurvive() {
+      let count = 0;
+
+      for (let i = 0; i < this.dna.length; i++) {
+        const thisBase = this.dna[i];
+        if (thisBase === "C" || thisBase === "G") {
+          count++;
+        }
+      }
+
+      if (count >= 9) {
+        return true;
+      } else {
+        return false;
+      }
     },
   };
 };
 
-// Test
-const subjectOne = pAequorFactory(1, mockUpStrand());
-const subjectTwo = pAequorFactory(2, mockUpStrand());
-console.log(subjectOne.compareDNA(subjectTwo));
+const createSurvivablePAequorArray = (amountToMake, startingSpecimenNum) => {
+  let count = startingSpecimenNum;
+  let array = [];
+  while (count < amountToMake + startingSpecimenNum) {
+    let newPAequor = pAequorFactory(count, mockUpStrand());
+    if (newPAequor.willLikelySurvive()) {
+      array.push(newPAequor);
+      count++;
+    }
+  }
+  return array;
+};
+
+let instances = createSurvivablePAequorArray(30, 101);
+console.log(instances);
