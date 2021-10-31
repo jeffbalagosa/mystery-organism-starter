@@ -59,6 +59,26 @@ const pAequorFactory = (num, dnaArray) => {
         return false;
       }
     },
+    complementStrand() {
+      let complementaryStrandArray = [];
+      const dnaBases = ["A", "T", "C", "G"];
+      for (let i = 0; i < this.dna.length; i++) {
+        const base = this.dna[i];
+
+        if (base === dnaBases[0]) {
+          complementaryStrandArray.push(dnaBases[1]);
+        } else if (base === dnaBases[1]) {
+          complementaryStrandArray.push(dnaBases[0]);
+        } else if (base === dnaBases[2]) {
+          complementaryStrandArray.push(dnaBases[3]);
+        } else if (base === dnaBases[3]) {
+          complementaryStrandArray.push(dnaBases[2]);
+        } else {
+          complementaryStrandArray.push("error");
+        }
+      }
+      return complementaryStrandArray;
+    },
   };
 };
 
@@ -75,5 +95,9 @@ const createSurvivablePAequorArray = (amountToMake, startingSpecimenNum) => {
   return array;
 };
 
-let instances = createSurvivablePAequorArray(30, 101);
-console.log(instances);
+// create 30 "Will Likely Survive" instances of P.aaequor
+let subjectInstances = createSurvivablePAequorArray(30, 100);
+
+// bonus create complement strand
+let testSubject10 = pAequorFactory(55, mockUpStrand());
+console.log(testSubject10.complementStrand());
